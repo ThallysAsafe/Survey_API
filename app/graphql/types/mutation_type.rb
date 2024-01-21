@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 module Types
   class MutationType < Types::BaseObject
     # TODO: remove me
@@ -8,5 +7,7 @@ module Types
     def test_field
       "Hello World"
     end
+    
+    field :createUser, mutation: Mutations::CreateUser
   end
 end
