@@ -7,6 +7,10 @@ module Mutations
     input_object_class Types::BaseInputObject
     object_class Types::BaseObject
 
-    
+    private # continuar aqui
+
+    def authorize
+      render json: {message: 'Você precisa fazer o login'},status: :unauthorized unless authorized_user
+    end
   end
 end

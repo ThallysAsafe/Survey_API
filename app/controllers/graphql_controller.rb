@@ -12,7 +12,7 @@ class GraphqlController < ApplicationController
     operation_name = params[:operationName]
     context = {
       # Query context goes here, for example:
-      # current_user: current_user,
+      current_user: authorized_user
     }
     result = SurveyApiSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
@@ -23,6 +23,25 @@ class GraphqlController < ApplicationController
 
   private
 
+  def decode_token
+    auth_header = request.headers['Authorization']
+    if auth_header
+      token = auth_header.split(' ').last
+      begin
+        JWT.decode(token,'secret',true, algorith:'HS256')
+      rescue JWT::DecodeError
+        nil
+      end
+    end
+  end
+
+  def authorized_user
+    decoded_token = decode_token()
+    if decoded_token
+      user_id = decoded_token[0]['user_id']
+      @user = User.find_by(id: user_id)
+    end
+  end
   # Handle variables in form data, JSON body, or a blank value
   def prepare_variables(variables_param)
     case variables_param
