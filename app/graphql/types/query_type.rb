@@ -22,6 +22,10 @@ module Types
     # They will be entry points for queries on your schema.
 
     # TODO: remove me
+    field :research, [Types::ResearchType], null: false
+    def research # lembrar de criar um status para ser abertas e fechadas
+      Research.all
+    end
     field :test_field, String, null: false,
       description: "An example field added by the generator"
     def test_field
