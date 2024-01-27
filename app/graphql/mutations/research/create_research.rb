@@ -7,6 +7,7 @@ module Mutations
       field :research, Types::ResearchType, null: true
 
       def resolve(title:, confirm:)
+
         if confirm == "true"
           research = ::Research.create(title: title)
           { research: research }

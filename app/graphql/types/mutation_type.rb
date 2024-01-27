@@ -10,9 +10,12 @@ module Types
 
     field :createUser, mutation: Mutations::CreateUser
     field :loginUser, mutation: Mutations::LoginUser
-    
+
     field :createResearch, mutation: Mutations::Research::CreateResearch
+    field :updateResearch, mutation: Mutations::Research::UpdateResearch
 
     field :createQuestion, mutation: Mutations::Question::CreateQuestion
+    field :updateQuestion, mutation: Mutations::Question::UpdateQuestion
+    field :deleteQuestion, mutation: Mutations::Question::DeleteQuestion
   end
 end
