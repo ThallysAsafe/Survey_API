@@ -1,13 +1,14 @@
 module Mutations
   class CreateUser < BaseMutation
-    argument :username, String, required: true
-    argument :password, String, required: true
-    argument :role, String, required: false
+    argument :input, Types::Inputs::UserInputType, required: true
 
     field :user, Types::UserType, null: true
     field :token, String, null: true
 
-    def resolve(username:, password:, role:)
+    def resolve(input:)
+      username = input[:username]
+      password = input[:password]
+      role = input[:role] || "responder"
       user = User.create(
         username: username,
         password: password,

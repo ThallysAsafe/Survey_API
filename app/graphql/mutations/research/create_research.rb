@@ -7,7 +7,11 @@ module Mutations
       field :research, Types::ResearchType, null: true
 
       def resolve(title:, confirm:)
+        current_user = context.current_user
 
+        unless current_user && current_user['user_role'] == 'coordinator'
+          return { research: nil, errors: ['Acesso não autorizado'] }
+        end
         if confirm == "true"
           research = ::Research.create(title: title)
           { research: research }

@@ -39,4 +39,16 @@ class SurveyApiSchema < GraphQL::Schema
     # For example, use Rails' GlobalID library (https://github.com/rails/globalid):
     GlobalID.find(global_id)
   end
+
+  class Context < GraphQL::Query::Context
+
+    def current_user
+      @current_user ||= begin
+        token = request.headers['Authorization']&.split(' ')&.last
+        decode_token(token)
+      end
+    end
+  end
+
+  context_class Context
 end

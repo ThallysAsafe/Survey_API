@@ -28,8 +28,11 @@ class GraphqlController < ApplicationController
     if auth_header
       token = auth_header.split(' ').last
       begin
-        JWT.decode(token,'secret',true, algorith:'HS256')
-      rescue JWT::DecodeError
+        decoded_token = JWT.decode(token, 'secret', true, algorithm: 'HS256')
+        logger.debug "Decoded Token: #{decoded_token}"
+        decoded_token
+      rescue JWT::DecodeError => e
+        logger.error "JWT Decode Error: #{e.message}"
         nil
       end
     end
