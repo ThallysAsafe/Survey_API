@@ -1,4 +1,4 @@
-module Types
+module Types::Inputs
   class QuestionInputType < Types::BaseInputObject
     description 'Attributes for creating or updating a question'
 

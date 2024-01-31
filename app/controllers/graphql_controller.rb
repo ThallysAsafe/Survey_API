@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class GraphqlController < ApplicationController
+  before_action :authorize, only: [Mutations::LoginUser, Mutations::CreateUser]
   # If accessing from outside this domain, nullify the session
   # This allows for outside API access while preventing CSRF attacks,
   # but you'll have to authenticate your user separately
@@ -21,6 +22,14 @@ class GraphqlController < ApplicationController
     handle_error_in_development(e)
   end
 
+  def authorized_user
+    decoded_token = decode_token()
+    if decoded_token
+      user_id = decoded_token[0]['user_id']
+      @user = User.find_by(id: user_id)
+    end
+  end
+
   private
 
   def decode_token
@@ -38,13 +47,7 @@ class GraphqlController < ApplicationController
     end
   end
 
-  def authorized_user
-    decoded_token = decode_token()
-    if decoded_token
-      user_id = decoded_token[0]['user_id']
-      @user = User.find_by(id: user_id)
-    end
-  end
+
   # Handle variables in form data, JSON body, or a blank value
   def prepare_variables(variables_param)
     case variables_param
@@ -63,6 +66,18 @@ class GraphqlController < ApplicationController
     else
       raise ArgumentError, "Unexpected parameter: #{variables_param}"
     end
+  end
+
+  def authorize
+    unless user_authenticated?
+      render json: { errors: [{ message: 'Unauthorized', data: {} }], status: 401 }
+    end
+  end
+
+  def user_authenticated?
+    # Substitua isso pela lógica real de autenticação do usuário
+    # Exemplo: Verifique se o usuário possui um token válido
+    decode_token.present? && authorized_user.present?
   end
 
   def handle_error_in_development(e)

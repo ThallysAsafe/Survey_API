@@ -1,14 +1,21 @@
 module Mutations
   module Research
     class UpdateResearch < Mutations::BaseMutation
+
       argument :id, ID, required: true
-      argument :title, String, required: true
-      argument :status, String, required: true
+      argument :input, [Types::Inputs::ResearchInputType], required: true
 
       field :research, Types::ResearchType, null: true
       field :errors, [String], null: false
 
-      def resolve(id:, title:, status:)
+      def resolve(id:, input:)
+        current_user = context[:current_user]
+        research_input = input[0]
+        title = input[0][:title]
+        status = input[0][:status]
+        unless current_user && current_user['user_role'] == 'coordinator'
+          return { research: nil, errors: ['Acesso não autorizado'] }
+        end
         research = ::Research.find(id)
         if research.update(title: title, status: status)
           { research: research, errors: [] }

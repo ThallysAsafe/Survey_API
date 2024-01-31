@@ -2,7 +2,7 @@ module Mutations
   module Question
     class UpdateQuestion < BaseMutation
       argument :id, ID, required: true
-      argument :input, Types::QuestionInputType, required: true
+      argument :input, Types::Inputs::QuestionInputType, required: true
 
       field :question, Types::QuestionType, null: true
       field :errors, [String], null: false

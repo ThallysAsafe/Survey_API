@@ -40,15 +40,15 @@ class SurveyApiSchema < GraphQL::Schema
     GlobalID.find(global_id)
   end
 
-  class Context < GraphQL::Query::Context
+  # class Context < GraphQL::Query::Context
 
-    def current_user
-      @current_user ||= begin
-        token = request.headers['Authorization']&.split(' ')&.last
-        decode_token(token)
-      end
-    end
-  end
+  #   def current_user
+  #     @current_user ||= begin
+  #       token = request.headers['Authorization']&.split(' ')&.last
+  #       decode_token(token)
+  #     end
+  #   end
+  # end
 
-  context_class Context
+  # context_class Context
 end
