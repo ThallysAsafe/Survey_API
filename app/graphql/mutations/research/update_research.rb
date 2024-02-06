@@ -10,14 +10,15 @@ module Mutations
 
       def resolve(id:, input:)
         current_user = context[:current_user]
-        research_input = input[0]
+
         title = input[0][:title]
         status = input[0][:status]
-        unless current_user && current_user['user_role'] == 'coordinator'
+        unless current_user && current_user['role'] == 'coordinators'
           return { research: nil, errors: ['Acesso não autorizado'] }
         end
         research = ::Research.find(id)
-        if research.update(title: title, status: status)
+        if research
+          research.update(title: title, status: status)
           { research: research, errors: [] }
         else
           { research: nil, errors: research.errors.full_messages }

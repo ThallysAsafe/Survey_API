@@ -8,4 +8,6 @@ class Research < ApplicationRecord
   #     errors.add(:base, 'Uma pesquisa deve ter de 1 a 10 perguntas.')
   #   end
   # end
+  has_many :answer
+
 end
