@@ -7,6 +7,6 @@ module Types
     field :type_question, String, null: true
     field :research_id, Integer, null: false
     field :options_answer, [String], null: false
-    field :answers, [Types::AnswerType], null: true
+    field :answers, [AnswerType], null: true
   end
 end

@@ -15,7 +15,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_03_132934) do
   enable_extension "plpgsql"
 
   create_table "answers", force: :cascade do |t|
-    t.string "answer"
+    t.text "answer", default: [], array: true
     t.bigint "question_id", null: false
     t.bigint "research_id", null: false
     t.bigint "user_id", null: false

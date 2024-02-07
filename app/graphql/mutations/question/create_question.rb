@@ -9,10 +9,7 @@ module Mutations
         name = input[:name]
         type_question = input[:type_question]
         options_answer = input[:options_answer]
-        unless (1 <= options_answer.length && options_answer.length <= 5) || type_question == "text"
-          raise GraphQL::ExecutionError, 'As opções de resposta tem que ser entre 1 a 5 opções'
-        end
-
+        params_question(options_answer,type_question)
         research = ::Research.find(research_id)
         question = ::Question.create(
           name: name,
@@ -20,6 +17,24 @@ module Mutations
           research_id: research_id,
          options_answer: options_answer )
         { question: question }
+      end
+
+      private
+
+      def params_question(options_answer, type_question)
+        unless (1 <= options_answer.length && options_answer.length <= 5) || type_question == "text"
+          raise GraphQL::ExecutionError, 'As opções de resposta tem que ser entre 1 a 5 opções'
+        end
+        unless type_question == 'text' && options_answer.length == 1 && (options_answer[0] == "single-line" || options_answer[0] == "mult-line")
+          raise GraphQL::ExecutionError, 'Esse tipo de questão só permite single-line ou mult-line no campo optionsAnswer'
+        end
+
+      end
+
+      def validate_user(current_user)
+        unless current_user && current_user['role'] == 'coordinators'
+          raise GraphQL::ExecutionError, 'Acesso não autorizado'
+        end
       end
     end
   end
