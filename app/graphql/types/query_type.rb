@@ -27,16 +27,24 @@ module Types
       Question.all
     end
 
-    field :research, [Types::ResearchType], null: false
-    def research
+    field :Research, [Types::ResearchType], null: false
+    def Research
       Research.preload(:questions)
     end
-    field :openresearch, [Types::ResearchType], null: false
-    def openresearch
+    field :openResearch, [Types::ResearchType], null: false
+    def openResearch
       Research.where(status: 'open')
     end
-    field :closedresearch, [Types::ResearchType], null: false
-    def closedresearch
+    field :findResearch, Types::ResearchType, null: true do
+      argument :id, ID, required: true
+    end
+
+    def findResearch(id:)
+      Research.where(status: 'closed').find_by(id: id)
+    end
+
+    field :closedResearch, [Types::ResearchType], null: false
+    def closedResearch
       Research.where(status: 'closed')
     end
 

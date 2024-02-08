@@ -26,12 +26,13 @@ module Mutations
         @data = []
         user_id = context[:current_user].id
         answers.each do |answer|
+
           params_answer(answer,user_id)
         end
 
         if check_research_completion(answers[0].research_id)
-          created_answer = ::Answer.create!(@data)
-            # utilizar uma especie de importação all
+          created_answer = ::Answer.insert_all(@data)
+
 
           { answers: created_answer, errors: nil }
         else
@@ -46,6 +47,7 @@ module Mutations
           if question.type_question == 'text' &&  question.options_answer[0] == "single-line" && answer.answer[0].length >= 120
             raise GraphQL::ExecutionError, "Tamanho da resposta acima do esperado, resposta aceita só abaixo de 80 caracteres."
           end
+
           @data.append({research_id: answer.research_id, question_id: answer.question_id, answer: answer.answer, user_id: user_id})
         else
           raise GraphQL::ExecutionError,"Resposta Inválida, porfavor revise as respostas se está dentro dos parametros"
@@ -55,7 +57,7 @@ module Mutations
       def check_research_completion(research_id)
         research = ::Research.find(research_id)
         total_questions = research.questions.count
-        answered_questions = research.questions.joins(:answers).distinct.count
+        answered_questions = research.questions.joins(:answers).distinct.count # tenho que remover isso
         tamanho_data = @data.length
         if research.status == 'open'
           return total_questions == (tamanho_data + answered_questions)
@@ -66,7 +68,7 @@ module Mutations
       end
 
       def validate_user(current_user)
-        unless current_user && current_user['role'] == 'coordinators'
+        unless current_user && current_user['role'] == 'responders'
           raise GraphQL::ExecutionError, 'Acesso não autorizado'
         end
       end

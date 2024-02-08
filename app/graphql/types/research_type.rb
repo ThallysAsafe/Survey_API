@@ -6,6 +6,5 @@ module Types
     field :title, String, null: false
     field :status, String, null: false
     field :questions, [QuestionType], null: true
-    
   end
 end
