@@ -25,10 +25,11 @@ module Mutations
         unless (1 <= options_answer.length && options_answer.length <= 5) || type_question == "text"
           raise GraphQL::ExecutionError, 'As opções de resposta tem que ser entre 1 a 5 opções'
         end
-        unless type_question == 'text' && options_answer.length == 1 && (options_answer[0] == "single-line" || options_answer[0] == "mult-line")
-          raise GraphQL::ExecutionError, 'Esse tipo de questão só permite single-line ou mult-line no campo optionsAnswer'
+        if type_question == "text"
+          unless options_answer.length == 1 && (options_answer[0] == "single-line" || options_answer[0] == "mult-line")
+            raise GraphQL::ExecutionError, 'Esse tipo de questão só permite single-line ou mult-line no campo optionsAnswer'
+          end
         end
-
       end
 
       def validate_user(current_user)

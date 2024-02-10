@@ -10,7 +10,7 @@ module Mutations
       def resolve(id:, update:)
         question = ::Question.find_by(id: id)
         if question
-          update_question(question, input)
+          update_question(question, update)
         else
           { question: nil, errors: ["Pergunta não encontrada"] }
         end
@@ -21,7 +21,7 @@ module Mutations
 
       def update_question(question, update)
         options_answer = update[:options_answer]
-        
+
         if question.update(update.to_h.except(:_destroy))
           { question: question, errors: [] }
         else

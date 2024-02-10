@@ -2,17 +2,17 @@ module Mutations
   module Answer
     class CreateAnswer < BaseMutation
 
-      argument :answers, [Types::Inputs::AnswerInputType], required: true
+      argument :response, [Types::Inputs::AnswerInputType], required: true
       argument :confirm, String
       field :answers, [Types::AnswerType], null: true
       field :errors, [String], null: true
 
-      def resolve(answers:,confirm:)
+      def resolve(response:,confirm:)
         current_user = context[:current_user]
 
         validate_user(current_user)
         if confirm == 'true'
-          create_answer(answers)
+          create_answer(response)
         else
           { answers: nil, errors: ["Resposta cancelada com sucesso"] }
         end
@@ -21,17 +21,16 @@ module Mutations
 
       private
 
-      def create_answer(answers)
+      def create_answer(response)
 
         @data = []
         user_id = context[:current_user].id
-        answers.each do |answer|
-
+        response.each do |answer|
           params_answer(answer,user_id)
         end
 
-        if check_research_completion(answers[0].research_id)
-          created_answer = ::Answer.insert_all(@data)
+        if check_research_completion(response[0].research_id)
+          created_answer = ::Answer.create!(@data)
 
 
           { answers: created_answer, errors: nil }
@@ -43,8 +42,8 @@ module Mutations
       def params_answer(answer, user_id)
         question = ::Question.find_by(id: answer.question_id)
 
-        if (question.type_question == 'text' && (question.options_answer[0] == "single-line" || question.options_answer[0] == "mult-line")) || ((question.type_question == 'radio' && answer.answer.length == 1)) || (question.type_question == 'checkbox' && (answer.answer.length >= 1 && answer.answer.length <= 5))
-          if question.type_question == 'text' &&  question.options_answer[0] == "single-line" && answer.answer[0].length >= 120
+        if question && (question.type_question == "text" && (question.options_answer[0] == "single-line" || question.options_answer[0] == "mult-line")) || ((question.type_question == "radio" && answer.answer.length == 1)) || (question.type_question == "checkbox" && (answer.answer.length >= 1 && answer.answer.length <= 5))
+          if question.type_question == "text" &&  question.options_answer[0] == "single-line" && answer.answer[0].length >= 120
             raise GraphQL::ExecutionError, "Tamanho da resposta acima do esperado, resposta aceita só abaixo de 80 caracteres."
           end
 
@@ -57,10 +56,9 @@ module Mutations
       def check_research_completion(research_id)
         research = ::Research.find(research_id)
         total_questions = research.questions.count
-        answered_questions = research.questions.joins(:answers).distinct.count # tenho que remover isso
         tamanho_data = @data.length
-        if research.status == 'open'
-          return total_questions == (tamanho_data + answered_questions)
+        if research.status == 'open' # Lembrete: posso melhorar isso, botando ele mais no inicio do codigo
+          return total_questions == tamanho_data
         else
           raise GraphQL::ExecutionError,"A pesquisa selecionada está fechada."
         end
@@ -68,7 +66,7 @@ module Mutations
       end
 
       def validate_user(current_user)
-        unless current_user && current_user['role'] == 'responders'
+        unless current_user && current_user['role'] == 'coordinators'
           raise GraphQL::ExecutionError, 'Acesso não autorizado'
         end
       end
