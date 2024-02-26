@@ -5,7 +5,7 @@ module Mutations
 
     field :user, Types::UserType, null: true
     field :token, String, null: true
-
+    field :errors, String, null: true
     def resolve(username:, password:)
       @user = User.find_by(username: username)
 
@@ -15,7 +15,10 @@ module Mutations
         if token
           return {user: @user, token: token}
         end
+      else
+        return {errors: "Usuario ou senha inválidos, porfavor tente novamente."}
       end
+
     end
   end
 end

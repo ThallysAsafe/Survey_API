@@ -66,7 +66,7 @@ module Mutations
       end
 
       def validate_user(current_user)
-        unless current_user && current_user['role'] == 'coordinators'
+        unless current_user && current_user['role'] == 'responders'
           raise GraphQL::ExecutionError, 'Acesso não autorizado'
         end
       end
