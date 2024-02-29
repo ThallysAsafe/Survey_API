@@ -4,6 +4,7 @@ module Mutations
   RSpec.describe "mutation CreateResearch" do
 
     it "creates a Research and returns a research" do
+      user = create(:user, role: 'coordinators')
       research_attributes = attributes_for(:research)
       result = SurveyApiSchema.execute(
         query,
@@ -14,12 +15,13 @@ module Mutations
             status: research_attributes[:status]
           }
         }
-      }
+      }, context: { current_user: user }
       )
       expect(result["data"]["createResearch"]["research"]).to be_present
     end
     ## tentar criar em situação pra dar erro
     it "creates a Research and returns a research" do
+      user = create(:user, role: 'coordinators')
       research_attributes = attributes_for(:research)
       result = SurveyApiSchema.execute(
         query,
@@ -30,7 +32,7 @@ module Mutations
             status: research_attributes[:status]
           }
         }
-      }
+      }, context: { current_user: user }
       )
       expect(result["data"]["createResearch"]["research"]).to be_present
     end

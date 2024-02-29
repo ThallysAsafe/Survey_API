@@ -25,11 +25,11 @@ module Mutations
         variables: {
           create: { input: {
             username: user_attributes[:username],
-            password: user_attributes[:password],
-            role: nil
+            password: user_attributes[:password]
           }}
         }
       )
+      p result
       expect(result["data"]["createUser"]["user"]["role"]).to be_present
     end
 

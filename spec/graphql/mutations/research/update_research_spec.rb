@@ -2,7 +2,6 @@ require "rails_helper"
 
 module Mutations
   RSpec.describe "mutation UpdateResearch" do
-    let(:user) { create(:user) }
     it "Update a Research and returns a research" do
       research_attributes = attributes_for(:research)
       user = create(:user, role: 'coordinators')
@@ -40,11 +39,10 @@ module Mutations
           },
           context: { current_user: user }
         )
-        expect(result["data"]["updateResearch"]["errors"]).to_not be_blank
+        expect(result["errors"][0]["message"]).to eq("Acesso não autorizado")
       end
       it "Update a Research, return errors case user no logged" do
         research_attributes = attributes_for(:research)
-        user = create(:user, role: 'coordinators')
         research = create(:research)
         result = SurveyApiSchema.execute(
           query,
@@ -52,13 +50,12 @@ module Mutations
             update: {
                id: research.id,
               input: {
-                title: research.title,
-                status: research_attributes[:status] # ele ira apresentar o mesmo valor q ja tava antes, resumindo só alterando o title
+                title: research.title
               }
             }
           },
         )
-        expect(result["data"]["updateResearch"]["errors"]).to_not be_blank
+        expect(result["errors"][0]["message"]).to eq("Acesso não autorizado")
       end
 
 

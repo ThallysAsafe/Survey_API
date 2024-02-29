@@ -9,7 +9,7 @@ FactoryBot.define do
     # Gera um token JWT com um payload fictício automaticamente ao criar um usuário
     after(:create) do |user|
       payload = { user_id: user.id, username: user.username, role: user.role }
-      secret_key = 'your_secret_key'  # Substitua pelo segredo real que você usaria em sua aplicação
+      secret_key = 'secret'  
       user.update(token: JWT.encode(payload, secret_key, 'HS256'))
     end
   end

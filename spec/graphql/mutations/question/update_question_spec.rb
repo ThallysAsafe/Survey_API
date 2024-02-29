@@ -5,6 +5,7 @@ module Mutations
 
     it "Update a Question and returns a question" do
       question_attributes = attributes_for(:question)
+      user = create(:user, role: 'coordinators')
       question = create(:question)
       result = SurveyApiSchema.execute(
         query,
@@ -17,7 +18,7 @@ module Mutations
             optionsAnswer: question_attributes[:options_answer]
           }
         }
-      }
+        }, context: { current_user: user }
       )
       expect(result["data"]["updateQuestion"]).to be_present
       expect(result["data"]["updateQuestion"]["question"]).to be_present

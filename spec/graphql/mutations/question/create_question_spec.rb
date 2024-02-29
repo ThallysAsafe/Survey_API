@@ -5,6 +5,7 @@ module Mutations
 
     it "creates a Question and returns a question" do
       question_attributes = attributes_for(:question)
+      user = create(:user, role: 'coordinators')
       result = SurveyApiSchema.execute(
         query,
         variables: {
@@ -16,7 +17,7 @@ module Mutations
             optionsAnswer: question_attributes[:options_answer]
           }
         }
-      }
+      }, context: { current_user: user }
       )
       expect(result["errors"]).to be_nil
       expect(result["data"]["createQuestion"]).to be_present
