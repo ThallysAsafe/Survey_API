@@ -18,30 +18,55 @@ module Types
       ids.map { |id| context.schema.object_from_id(id, context) }
     end
 
-    # Add root-level fields here.
-    # They will be entry points for queries on your schema.
+    field :node, Types::NodeType, null: true do
+      argument :id, ID, required: true
+    end
 
-    # TODO: remove me
+    def node(id:)
+      context.schema.object_from_id(id, context)
+    end
+
+    field :nodes, [Types::NodeType, null: true], null: true do
+      argument :ids, [ID], required: true
+    end
+
+    def nodes(ids:)
+      ids.map { |id| context.schema.object_from_id(id, context) }
+    end
+
     field :question, [Types::QuestionType], null: false
     def question
       Question.all
     end
 
-    field :research, [Types::ResearchType], null: false
-    def research
-      Research.preload(:questions)
+    field :myResearch, [Types::ResearchType], null: false
+    def myResearch
+      validate_user()
+      Research.where_group(context[:current_user].id)
     end
-    field :openresearch, [Types::ResearchType], null: false
-    def openresearch
+
+    field :openResearch, [Types::ResearchType], null: false
+    def openResearch
       Research.where(status: 'open')
     end
-    field :closedresearch, [Types::ResearchType], null: false
-    def closedresearch
+
+    field :findResearch, Types::ResearchType, null: true do
+      argument :id, ID, required: true
+    end
+
+    def findResearch(id:)
+      Research.where(status: 'closed').find_by(id: id)
+    end
+
+    field :closedResearch, [Types::ResearchType], null: false
+    def closedResearch
       Research.where(status: 'closed')
     end
 
-    field :test_field, String, null: false,
-      description: "An example field added by the generator"
+    field :researchResults, resolver: Resolvers::ResearchResults
+
+
+    field :test_field, String, null: false
     def test_field
       "Hello World!"
     end

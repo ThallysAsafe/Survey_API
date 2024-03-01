@@ -1,6 +1,7 @@
 class Research < ApplicationRecord
   has_many :questions
   validates :title, presence: true
+  validates :status, presence: true
   # validate :validate_number_of_questions
   enum status: { open: 'open', closed: 'closed' }
   # def validate_number_of_questions

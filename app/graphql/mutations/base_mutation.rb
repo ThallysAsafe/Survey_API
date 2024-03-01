@@ -7,10 +7,10 @@ module Mutations
     input_object_class Types::BaseInputObject
     object_class Types::BaseObject
 
-    private # continuar aqui
-
-    def authorize
-      render json: {message: 'Você precisa fazer o login'},status: :unauthorized unless authorized_user
+    def validate_user(current_user,role)
+      unless current_user && current_user['role'] == role
+        raise GraphQL::ExecutionError, 'Acesso não autorizado'
+      end
     end
   end
 end

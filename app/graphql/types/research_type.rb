@@ -6,6 +6,6 @@ module Types
     field :title, String, null: false
     field :status, String, null: false
     field :questions, [QuestionType], null: true
-    
+    field :researchResults, Types::ResearchResultType, null: true
   end
 end
