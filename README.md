@@ -25,7 +25,7 @@
 
 - Clone o repositório em sua máquina:
   ```bash
-  $ git clone 
+  $ git clone https://github.com/ThallysAsafe/Survey_API.git
   ```
 - Acesse o repositório usando:
   ```bash
