@@ -39,7 +39,7 @@ Essa API oferece suporte a dois tipos de usuários: 'responders' (Respondentes d
 
 Certifique-se de conceder o tipo de usuário 'coordinators' apenas a pessoas autorizadas, pois elas têm acesso às funcionalidades da API.
 Na parte de authenticação da API foi utilizado o JWT(Json Web Token)
-* No final do projeto existe um arquivo chamado Insomnia_2024-03-05.json contendo as principais rotas e algumas informações referentes a cada rota. Obs: esse arquivo deve ser importado no Insomnia. Depois de importado, você irá encontrar as seguintes rotas:
+* No final do projeto existe um arquivo chamado Insomnia_2024-03-05.json contendo as queries e mutations. Obs: esse arquivo deve ser importado no Insomnia. Depois de importado, você irá encontrar as seguintes queries e mutations:
 
 # Surveys
 
@@ -98,5 +98,5 @@ Na parte de authenticação da API foi utilizado o JWT(Json Web Token)
   - Para acessar qualquer rota da API, é necessário realizar o processo de login na aplicação.
   - Primeiro necessário fazer o registro da conta no createUser.
   - O loginUser envolve o envio de uma solicitação para obter um token de acesso.
-
+  - Para acessar as querys é necessário inserir o token, sem ele não conseguirar acessar a query, apresentando como resposta "acesso negado"
   
