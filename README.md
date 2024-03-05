@@ -2,7 +2,7 @@
  
 ## Projeto
 ### Informações:
-#### A aplicação não é destinada ao desenvolvimento de front-end; seu único propósito é fornecer uma API e entregar dados de teste JSON.
+#### Projeto SurveyAPI, é uma aplicação que não é destinada ao desenvolvimento de front-end; seu único propósito é fornecer uma API e entregar dados de teste JSON.
 
 # Tecnologias utilizada:
 
