@@ -18,12 +18,57 @@
 - [bcrypt](https://rubygems.org/gems/bcrypt/versions/3.1.11?locale=pt-BR)
 - [jwt](https://rubygems.org/gems/jwt/versions/1.5.4?locale=pt-BR)
 
+## Tipos de Usuários
 
+Essa API oferece suporte a dois tipos de usuários: 'responders' (Respondentes de Pesquisa) e 'coordinators' (Administradores de Pesquisa). Essa distinção é importante para controlar o acesso e as permissões dentro da api.
+
+  ### Usuário 'responders' (Respondentes da Pesquisa)
+
+  Os usuários 'responders' são os participantes normais do sistema e têm permissões padrão. Eles podem:
+
+  - Acessar e responder a pesquisas.
+  - Visualizar os resultados das pesquisas.
+
+  ### Usuário 'coordinators' (Administrador de Pesquisa)
+
+  Os usuários 'adm' são os Coordenadores de Pesquisa e possuem permissões extras para a criação e manipulação de pesquisas. Eles têm as seguintes permissões adicionais:
+
+  - Criar e Editar pesquisas.
+  - Criar, Editar e Excluir perguntas.
+  
+
+Certifique-se de conceder o tipo de usuário 'coordinators' apenas a pessoas autorizadas, pois elas têm acesso às funcionalidades da API.
+Na parte de authenticação da API foi utilizado o JWT(Json Web Token)
+* No final do projeto existe um arquivo chamado insomnia_.json contendo as principais rotas e algumas informações referentes a cada rota. Obs: esse arquivo deve ser importado no Insomnia. Depois de importado, você irá encontrar as seguintes rotas:
+
+# Surveys
+
+- **Criar uma nova pesquisa**: `Mutation CreateResearch` Apenas coordinators
+- **Atualizar uma pesquisa existente**: `Mutation UpdateResearch` Apenas coordinators
+- **Excluir uma pesquisa**: `Mutation DeleteResearch` Apenas coordinators
+- **Listar todas as pesquisas abertas**: `Query OpenResearch`
+- **Listar todas as pesquisas fechadas**: `Query ClosedResearch` 
+- **Detalhes de uma pesquisa específica**: `Query FindResearch`
+
+# Questions
+
+- **Criar uma nova pergunta para uma pesquisa**: `Mutation CreateQuestion` Apenas coordinators
+- **Atualizar uma pergunta em uma pesquisa**: `Mutation UpdateQuestion` Apenas coordinators
+- **Excluir uma pergunta de uma pesquisa**: `Mutation DeleteQuestion` Apenas coordinators
+
+# Answers
+
+- **Criar uma nova resposta para uma pesquisa**: `Mutation CreateAnswer`
+
+# Users
+
+- **Registrar um novo usuário**: `Mutation CreateUser`
+- **Autenticar um usuário**: `Mutation LoginUser`
 
 
 ## Para executar O Projeto
-
 - Clone o repositório em sua máquina:
+
   ```bash
   $ git clone https://github.com/ThallysAsafe/Survey_API.git
   ```
@@ -47,3 +92,9 @@
   ```bash
   $ rails s
   ```
+  ## Observações
+
+- **Login e Token de Acesso**:
+  - Para acessar qualquer rota da API, é necessário realizar o processo de login na aplicação.
+  - O login envolve o envio de uma solicitação para obter um token de acesso.
+  - 
