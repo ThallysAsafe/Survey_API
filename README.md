@@ -22,16 +22,16 @@
 
 Essa API oferece suporte a dois tipos de usuários: 'responders' (Respondentes de Pesquisa) e 'coordinators' (Administradores de Pesquisa). Essa distinção é importante para controlar o acesso e as permissões dentro da api.
 
-  ### Usuário 'responders' (Respondentes da Pesquisa)
+  ### Usuário 'responder' (Respondentes da Pesquisa)
 
-  Os usuários 'responders' são os participantes normais do sistema e têm permissões padrão. Eles podem:
+  Os usuários 'responder' são os participantes normais do sistema e têm permissões padrão. Eles podem:
 
   - Acessar e responder a pesquisas.
   - Visualizar os resultados das pesquisas.
 
-  ### Usuário 'coordinators' (Administrador de Pesquisa)
+  ### Usuário 'coordinator' (Administrador de Pesquisa)
 
-  Os usuários 'adm' são os Coordenadores de Pesquisa e possuem permissões extras para a criação e manipulação de pesquisas. Eles têm as seguintes permissões adicionais:
+  Os usuários 'coordinator' são os Coordenadores de Pesquisa e possuem permissões extras para a criação e manipulação de pesquisas. Eles têm as seguintes permissões adicionais:
 
   - Criar e Editar pesquisas.
   - Criar, Editar e Excluir perguntas.
@@ -64,8 +64,8 @@ Na parte de authenticação da API foi utilizado o JWT(Json Web Token)
 
 - **Registrar um novo usuário**: `Mutation CreateUser`
 - **Autenticar um usuário**: `Mutation LoginUser`
-
-
+# ResearchResults
+-**Mostrar os Resultados de uma determinada pesquisa fechada**: `Query ResearchResults`
 ## Para executar O Projeto
 - Clone o repositório em sua máquina:
 
