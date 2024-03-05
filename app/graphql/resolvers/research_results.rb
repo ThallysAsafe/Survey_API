@@ -6,6 +6,7 @@ class Resolvers::ResearchResults < Resolvers::BaseResolver
   argument :research_id, ID, required: true
 
   def resolve(**args)
+    validate_user(context[:current_user])
     research = Research.find_by(id: args[:research_id])
 
     unless research && research.status == "closed"

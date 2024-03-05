@@ -9,7 +9,7 @@ module Mutations
       result = SurveyApiSchema.execute(
         query,
         variables: {
-          create: { confirm: "true",
+          create: { confirm: true,
           input: {
             title: research_attributes[:title],
             status: research_attributes[:status]
@@ -26,7 +26,7 @@ module Mutations
       result = SurveyApiSchema.execute(
         query,
         variables: {
-          create: { confirm: "true",
+          create: { confirm: true,
           input: {
             title: research_attributes[:title],
             status: research_attributes[:status]

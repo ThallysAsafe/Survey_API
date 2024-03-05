@@ -2,7 +2,7 @@ require "rails_helper"
 
 module Mutations
   RSpec.describe "mutation CreateUser" do
-    it "creates a user and returns a token" do
+    it "creates a user and returns registered user" do
       user_attributes = attributes_for(:user)
       result = SurveyApiSchema.execute(
         query,
@@ -15,7 +15,6 @@ module Mutations
         }
       )
       expect(result["data"]["createUser"]["user"]).to be_present
-      expect(result["data"]["createUser"]["token"]).to be_present
     end
 
     it "returns a user created with the role field with the result responds by default, if you have not added the role" do
@@ -29,7 +28,6 @@ module Mutations
           }}
         }
       )
-      p result
       expect(result["data"]["createUser"]["user"]["role"]).to be_present
     end
 
@@ -42,7 +40,7 @@ module Mutations
               username
               role
             }
-            token
+          errors
           }
         }
       GQL

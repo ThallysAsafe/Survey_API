@@ -60,7 +60,7 @@ class GraphqlController < ApplicationController
     when Hash
       variables_param
     when ActionController::Parameters
-      variables_param.to_unsafe_hash # GraphQL-Ruby will validate name and type of incoming variables.
+      variables_param.to_unsafe_hash
     when nil
       {}
     else
@@ -75,8 +75,6 @@ class GraphqlController < ApplicationController
   end
 
   def user_authenticated?
-    # Substitua isso pela lógica real de autenticação do usuário
-    # Exemplo: Verifique se o usuário possui um token válido
     decode_token.present? && authorized_user.present?
   end
 

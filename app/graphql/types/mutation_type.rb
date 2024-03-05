@@ -13,6 +13,7 @@ module Types
 
     field :createResearch, mutation: Mutations::Research::CreateResearch
     field :updateResearch, mutation: Mutations::Research::UpdateResearch
+    field :deleteResearch, mutation: Mutations::Research::DeleteResearch
 
     field :createQuestion, mutation: Mutations::Question::CreateQuestion
     field :updateQuestion, mutation: Mutations::Question::UpdateQuestion

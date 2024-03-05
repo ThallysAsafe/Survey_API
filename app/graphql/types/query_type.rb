@@ -34,19 +34,9 @@ module Types
       ids.map { |id| context.schema.object_from_id(id, context) }
     end
 
-    field :question, [Types::QuestionType], null: false
-    def question
-      Question.all
-    end
-
-    field :myResearch, [Types::ResearchType], null: false
-    def myResearch
-      validate_user()
-      Research.where_group(context[:current_user].id)
-    end
-
     field :openResearch, [Types::ResearchType], null: false
     def openResearch
+      validate_user(context[:current_user])
       Research.where(status: 'open')
     end
 
@@ -55,20 +45,28 @@ module Types
     end
 
     def findResearch(id:)
+      validate_user(context[:current_user])
       Research.where(status: 'closed').find_by(id: id)
     end
 
     field :closedResearch, [Types::ResearchType], null: false
     def closedResearch
+      validate_user(context[:current_user])
       Research.where(status: 'closed')
     end
 
     field :researchResults, resolver: Resolvers::ResearchResults
 
-
-    field :test_field, String, null: false
-    def test_field
-      "Hello World!"
+    def validate_user(current_user,role=false)
+      if role
+        unless current_user && current_user['role'] == role
+          raise GraphQL::ExecutionError, 'Acesso não autorizado'
+        end
+      else
+        unless current_user && (current_user['role'] == 'coordinators' || current_user['role'] == 'responders')
+          raise GraphQL::ExecutionError, 'Acesso não autorizado'
+        end
+      end
     end
   end
 end

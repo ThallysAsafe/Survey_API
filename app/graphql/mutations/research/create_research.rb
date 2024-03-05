@@ -2,7 +2,7 @@ module Mutations
   module Research
     class CreateResearch < BaseMutation
       argument :input, Types::Inputs::ResearchInputType, required: true
-      argument :confirm, String, required: true
+      argument :confirm, Boolean, required: true
 
 
       field :research, Types::ResearchType, null: true
@@ -10,7 +10,7 @@ module Mutations
       def resolve(**arguments)
         validate_user(context[:current_user],"coordinators")
 
-        if arguments[:confirm] == "true"
+        if arguments[:confirm]
           ResearchCreator.new(arguments).call
         else
           {research: nil}

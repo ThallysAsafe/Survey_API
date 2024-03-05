@@ -26,4 +26,3 @@ class QuestionDelete < ApplicationService
     end
   end
 end
-0

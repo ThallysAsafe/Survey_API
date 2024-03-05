@@ -11,21 +11,21 @@ class UserCreator < ApplicationService
   private
 
   def create_user
-    user = User.create(
+    @user = User.new(
       username: @arguments[:username],
       password: @arguments[:password],
       role: @arguments[:role]
       )
-    tokens = generate_jwt_token(user)
-    if tokens
-      { user: user, token: tokens }
+
+    if name_exist?()
+      @user.save
+      { user: @user }
     else
-      raise GraphQL::ExecutionError.new(I18n.t('token de usuario não foi criada'))
+      { errors: "Nome de usuario ja existe, tente outro nome" }
     end
   end
 
-
-  def generate_jwt_token(user)
-    JsonWebToken.encode({user_id: user.id, user_role: user.role})
+  def name_exist?
+    return User.find_by(username: @user.username) == nil
   end
 end

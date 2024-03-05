@@ -13,9 +13,10 @@ class QuestionCreator < ApplicationService
   private
 
   def create_question
+    @research = ::Research.find(@research_id)
+    params_research()
     params_question()
-    research = ::Research.find(@research_id)
-    if research
+    if @research
       question = ::Question.create(
         name: @arguments[:input][:name],
         type_question: @arguments[:input][:type_question],
@@ -35,6 +36,11 @@ class QuestionCreator < ApplicationService
       unless @arguments[:input][:options_answer].length == 1 && (@arguments[:input][:options_answer][0] == "single-line" || @arguments[:input][:options_answer][0] == "mult-line")
         raise GraphQL::ExecutionError, 'Esse tipo de questão só permite single-line ou mult-line no campo optionsAnswer'
       end
+    end
+  end
+  def params_research
+    if @research.questions.count > 10
+      raise GraphQL::ExecutionError, 'A pesquisa só pode ter no máximo, 10 questões'
     end
   end
 end
